@@ -18,7 +18,7 @@ export default function Dashboard() {
 
 useEffect(() => {
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === "Shift") {
       fetch("http://localhost:5678/webhook/search-recipes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,6 +34,21 @@ useEffect(() => {
 console.log("Selected ingredients:", selectedIngredients);
 
   
+
+ const [showResults, setShowResults] = useState(false);
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        setShowResults(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, []);
+
+
 
   return (
 
@@ -327,7 +342,12 @@ console.log("Selected ingredients:", selectedIngredients);
            Find...
         </div>
     </div>
+
     <div style={{height: "550px",width: "1120px",backgroundColor: "white",borderRadius:"20px", position: "relative" , left:"0px" , top:"100px" }}>
+
+        {showResults ? (
+        <>
+        
         <img src="/images/pink.jpg" alt="Search Icon" style={{ width: "1120px", height: "550px", marginRight: "10px" }} />
         <div onClick={() => window.open("https://www.teaforturmeric.com/chicken-karahi/", "_blank")} style={{height: "150px",width: "450px",backgroundColor: "white",cursor:"pointer",borderRadius:"20px", position: "absolute" , left:"50px" , top:"100px" }}>
             <img src="/images/chickenkarahi.avif" alt="Search Icon" style={{ transform: "rotate(90deg)", width: "150px", height: "150px", marginRight: "10px" }} />
@@ -376,9 +396,17 @@ console.log("Selected ingredients:", selectedIngredients);
 
         </div>
         </div>
+  
 
-
-  </div>
+   </>
+      ) : (
+        <img
+          src="/images/background.png"
+          alt="Background"
+          style={{ width: "1000px", height: "600px", marginRight: "10px" }}
+        />
+      )}
+      </div>
   </div>
 
 </div>
